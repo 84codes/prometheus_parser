@@ -8,7 +8,7 @@ class PrometheusParser
   KEY_RE = /[\w:]+/
   VALUE_RE = /-?\d+\.?\d*E?-?\d*|NaN/
   ATTR_KEY_RE = /[ \w-]+/
-  ATTR_VALUE_RE = %r{\s*"([\\"'\sa-zA-Z0-9\-_/.+~@; =]*)"\s*} # /\s*"(\S*)"\s*/
+  ATTR_VALUE_RE = %r{\s*"([\\"'\sa-zA-Z0-9\-_/.+~@;=]*)"\s*} # /\s*"(\S*)"\s*/
 
   def self.parse(raw)
     s = StringScanner.new(raw)
