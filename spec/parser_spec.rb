@@ -133,7 +133,7 @@ describe PrometheusParser do
     _(res.first[:attrs][:version]).must_equal "11.0.16+8-post-Debian-1deb11u1"
   end
 
-  it "should ... " do
+  it "should handle tilde (~) values in attributes " do
     raw = <<~METRICS
       jvm_info{runtime="OpenJDK Runtime Environment",vendor="Private Build",version="1.8.0_362-8u362-ga-0ubuntu1~20.04.1-b09",} 1.0
     METRICS
