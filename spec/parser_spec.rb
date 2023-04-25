@@ -140,4 +140,31 @@ describe PrometheusParser do
     res = PrometheusParser.parse(raw)
     _(res.first[:attrs][:version]).must_equal "1.8.0_362-8u362-ga-0ubuntu1~20.04.1-b09"
   end
+
+  it "should handle at (@) values in attributes" do
+    raw = <<~METRICS
+      rabbitmq_identity_info{rabbitmq_node="rabbit@dev-tough-coral-possum-01",rabbitmq_cluster="dev-tough-coral-possum",rabbitmq_cluster_permanent_id="rabbitmq-cluster-id-pEePKCwB2qV3TPZ2aVeW-w"} 1
+    METRICS
+    res = PrometheusParser.parse(raw)
+    _(res.first[:attrs][:rabbitmq_node]).must_equal "rabbit@dev-tough-coral-possum-01"
+    _(res.first[:value]).must_equal 1
+  end
+
+  it "should handle semi-colon (;) values in attributes" do
+    raw = <<~METRICS
+      telemetry_scrape_duration_seconds_count{registry="detailed",content_type="text/plain;"} 200
+    METRICS
+    res = PrometheusParser.parse(raw)
+    _(res.first[:attrs][:content_type]).must_equal "text/plain;"
+    _(res.first[:value]).must_equal 200
+  end
+
+  it "should handle equal sign (=) values in attributes" do
+    raw = <<~METRICS
+      telemetry_scrape_duration_seconds_count{registry="detailed",content_type="text/plain; version=0.0.4"} 200
+    METRICS
+    res = PrometheusParser.parse(raw)
+    _(res.first[:attrs][:content_type]).must_equal "text/plain; version=0.0.4"
+    _(res.first[:value]).must_equal 200
+  end
 end
