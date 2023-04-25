@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = "prometheus_parser"
-  s.version     = "0.2.0"
+  s.version     = "0.2.1"
   s.summary     = "Parse prometheus metrics"
   s.authors     = ["Magnus Landerblom"]
   s.email       = "mange@84codes.com"
