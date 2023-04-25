@@ -1,4 +1,3 @@
-require "dotenv/load"
 require "bundler/setup"
 require "minitest/reporters"
 require "minitest/focus"
