@@ -14,7 +14,7 @@ class PrometheusParser
     s = StringScanner.new(raw)
     res = []
     until s.eos?
-      if s.peek(1) == "#" # Skip comment lines
+      if s.peek(1) == "#" || s.peek(1) == "\n" # Skip comment and empty lines
         s.scan(/.*\n/)
         next
       end
