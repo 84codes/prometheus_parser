@@ -167,4 +167,17 @@ describe PrometheusParser do
     _(res.first[:attrs][:content_type]).must_equal "text/plain; version=0.0.4"
     _(res.first[:value]).must_equal 200
   end
+
+  it "should handle extra newlines" do
+    raw = <<~METRICS
+
+      response_packet_get_children_cache_hits{version="1.0.0"} 0.0
+
+    METRICS
+    res = PrometheusParser.parse(raw)
+    _(res.size).must_equal 1
+    _(res.first[:key]).must_equal "response_packet_get_children_cache_hits"
+    _(res.first[:value]).must_equal 0.0
+    _(res.first[:attrs]).must_equal({ version: "1.0.0" })
+  end
 end
