@@ -168,6 +168,17 @@ describe PrometheusParser do
     _(res.first[:value]).must_equal 200
   end
 
+  it "should handle less than (<) and more than (>) values in attributes" do
+    raw = <<~METRICS
+
+      rabbitmq_detailed_connection_channels{channel="<0.9648.14>"} 0
+
+    METRICS
+    res = PrometheusParser.parse(raw)
+    _(res.first[:attrs][:channel]).must_equal "<0.9648.14>"
+    _(res.first[:value]).must_equal 0
+  end
+
   it "should handle extra newlines" do
     raw = <<~METRICS
 
