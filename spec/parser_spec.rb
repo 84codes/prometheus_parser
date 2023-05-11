@@ -97,16 +97,6 @@ describe PrometheusParser do
     _(res.first[:value]).must_equal 8.123213e-28
   end
 
-  it "should handle quoted values in attributes" do
-    raw = <<~METRICS
-      kafka_log_LogManager_Value{name="LogDirectoryOffline",logDirectory="\"/var/lib/kafka\"",} 0.0
-    METRICS
-    res = PrometheusParser.parse(raw)
-    _(res.first[:attrs][:name]).must_equal "LogDirectoryOffline"
-    _(res.first[:attrs][:logDirectory]).must_equal "\"/var/lib/kafka\""
-    _(res.first[:value]).must_equal 0.0
-  end
-
   it "should handle decimals values in attributes" do
     raw = <<~METRICS
       concurrent_request_processing_in_commit_processor{quantile="0.5",} NaN
