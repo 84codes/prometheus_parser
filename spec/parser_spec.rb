@@ -181,4 +181,16 @@ describe PrometheusParser do
     _(res.first[:value]).must_equal 0.0
     _(res.first[:attrs]).must_equal({ version: "1.0.0" })
   end
+
+  it "should skip quoted values in attributes" do
+    raw = <<~METRICS
+      rabbitmq_detailed_queue_messages_ready{vhost="xxxxxxxx",queue="F56211164662"} 0
+      rabbitmq_detailed_queue_messages_ready{vhost="xxxxxxxx",queue=""{"command":"OPEN"}""} 5
+      rabbitmq_detailed_queue_messages_ready{vhost="xxxxxxxx",queue="F55211161384"} 0
+    METRICS
+    res = PrometheusParser.parse(raw)
+    _(res.first[:attrs][:queue]).must_equal "F56211164662"
+    _(res.last[:attrs][:queue]).must_equal "F55211161384"
+    _(res.size).must_equal 2
+  end
 end
