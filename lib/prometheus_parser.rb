@@ -20,7 +20,12 @@ class PrometheusParser
       end
       key = s.scan KEY_RE
       raise Invalid unless key
-      attrs = parse_attrs(s)
+      begin
+        attrs = parse_attrs(s)
+      rescue Invalid
+        s.scan(/.*\n/)
+        next
+      end
       value = s.scan VALUE_RE
       raise Invalid unless value
       value = value.to_f
