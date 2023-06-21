@@ -6,7 +6,7 @@ class PrometheusParser
   end
 
   KEY_RE = /[\w:]+/
-  VALUE_RE = /-?\d+\.?\d*E?-?\d*|NaN/
+  VALUE_RE = /-?\d+\.?\d*E?-?\d*|NaN|unknown/
   ATTR_KEY_RE = /[ \w-]+/
   ATTR_VALUE_RE = /\s*"([^"\\]*(\\.[^"\\]*)*)"\s*/ # /\s*"(\S*)"\s*/
 
@@ -27,6 +27,9 @@ class PrometheusParser
         next
       end
       value = s.scan VALUE_RE
+      # Workaround for faulty RabbitMQ metrics exporter
+      # https://github.com/rabbitmq/rabbitmq-server/discussions/5143
+      value = "NaN" if value == "unknown"
       raise Invalid unless value
       value = value.to_f
       s.scan(/\n/)
