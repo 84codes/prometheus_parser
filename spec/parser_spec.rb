@@ -193,4 +193,15 @@ describe PrometheusParser do
     _(res.last[:attrs][:queue]).must_equal "F55211161384"
     _(res.size).must_equal 2
   end
+
+  # Some RabbitMQ versions can respond with "unknown"
+  # https://github.com/rabbitmq/rabbitmq-server/discussions/5143
+  it "should fix broken values from RabbitMQ (unknown -> NaN)" do
+    raw = <<~METRICS
+      rabbitmq_detailed_disk_space_available_bytes unknown
+    METRICS
+    res = PrometheusParser.parse(raw)
+    _(res.first[:key]).must_equal "rabbitmq_detailed_disk_space_available_bytes"
+    _(res.first[:value]).must_equal 0.0
+  end
 end
