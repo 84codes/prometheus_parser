@@ -1,3 +1,5 @@
+require "strscan"
+
 class PrometheusParser
   class Invalid < StandardError
     def initialize
