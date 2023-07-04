@@ -31,7 +31,7 @@ class PrometheusParser
       value = s.scan VALUE_RE
       # Workaround for faulty RabbitMQ metrics exporter
       # https://github.com/rabbitmq/rabbitmq-server/discussions/5143
-      value = "NaN" if value == "unknown"
+      value = Float::NAN if %w[unknown NaN].include?(value)
       raise Invalid unless value
       value = value.to_f
       s.scan(/\n/)
