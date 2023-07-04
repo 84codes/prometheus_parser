@@ -86,7 +86,7 @@ describe PrometheusParser do
       kafka_server_socket_server_metrics NaN
     METRICS
     res = PrometheusParser.parse(raw)
-    _(res.first[:value]).must_equal 0.0
+    _(res.first[:value]).must_equal "NaN"
   end
 
   it "should handle 8.123213E-28" do
@@ -103,7 +103,7 @@ describe PrometheusParser do
     METRICS
     res = PrometheusParser.parse(raw)
     _(res.first[:attrs][:quantile]).must_equal "0.5"
-    _(res.first[:value]).must_equal 0
+    _(res.first[:value]).must_equal "NaN"
   end
 
   it "should handle space values in attributes" do
@@ -202,6 +202,6 @@ describe PrometheusParser do
     METRICS
     res = PrometheusParser.parse(raw)
     _(res.first[:key]).must_equal "rabbitmq_detailed_disk_space_available_bytes"
-    _(res.first[:value]).must_equal 0.0
+    _(res.first[:value]).must_equal "NaN"
   end
 end

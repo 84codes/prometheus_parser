@@ -33,7 +33,7 @@ class PrometheusParser
       # https://github.com/rabbitmq/rabbitmq-server/discussions/5143
       value = "NaN" if value == "unknown"
       raise Invalid unless value
-      value = value.to_f
+      value = value.to_f unless value == "NaN"
       s.scan(/\n/)
       res.push({ key:, attrs:, value: })
     end
