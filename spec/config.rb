@@ -18,12 +18,12 @@ SimpleCov.start do
 end
 
 if ENV["CI"] == "true"
-  MiniTest::Reporters.use!(
-    [MiniTest::Reporters::DefaultReporter.new,
-     MiniTest::Reporters::JUnitReporter.new(ENV["CI_REPORTS"] || "coverage/ci")]
+  Minitest::Reporters.use!(
+    [Minitest::Reporters::DefaultReporter.new,
+     Minitest::Reporters::JUnitReporter.new(ENV["CI_REPORTS"] || "coverage/ci")]
   )
 else
-  MiniTest::Reporters.use!(MiniTest::Reporters::SpecReporter.new)
+  Minitest::Reporters.use!(Minitest::Reporters::SpecReporter.new)
 end
 
-MiniTest::Test.make_my_diffs_pretty!
+Minitest::Test.make_my_diffs_pretty!
